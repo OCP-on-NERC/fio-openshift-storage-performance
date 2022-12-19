@@ -22,4 +22,4 @@ patches:
             volumes:
               - name: target
                 persistentVolumeClaim:
-                  claimName: benchmark-target-pv
+                  claimName: benchmark-target-pvc
