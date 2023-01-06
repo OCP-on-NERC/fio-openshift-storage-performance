@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fio-benchmarking
+  labels:
+    app: fio-benchmarking
+spec:
+  selector:
+    matchLabels:
+      app: fio-benchmarking
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: fio-benchmarking
+    spec:
+      containers:
+      - name: nginx-web-server
+        image: quay.io/dystewar/fio-openshift-storage-performance-nginx:latest
+        ports:
+          - containerPort: 8080
+        volumeMounts:
+          - mountPath: pvc/target
+            name: pvc-target
+          - mountPath: disk/target
+            name: disk-target
+      initContainers:
+      - name: fio
+        image: quay.io/dystewar/fio-openshift-storage-performance:latest
+        command: 
+          - /scripts/run-benchmark.sh
+        volumeMounts:
+          - mountPath: /scripts
+            name: benchmark-scripts
+          - mountPath: pvc/target
+            name: pvc-target
+          - mountPath: disk/target
+            name: disk-target
+          - mountPath: /fio-jobs
+            name: fio-jobs
+      volumes:
+        - name: benchmark-scripts
+          configMap:
+            name: benchmark-scripts
+            defaultMode: 0755
+        - name: fio-jobs
+          configMap:
+            name: fio-jobs
+        - name: pvc-target
+          persistentVolumeClaim:
+            claimName: pvc-target
+        - name: disk-target
+          emptyDir: {}
