@@ -5,5 +5,6 @@ commonLabels:
 resources:
   - pvcs/
   - scripts/
-  - jobs/
-  - obc.yaml
+  - deployments/
+  - route.yaml
+  - service.yaml

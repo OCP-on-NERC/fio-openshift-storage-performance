@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: nginx-route
+  namespace: storage-benchmark
+spec:
+  host: nginx-route-storage-benchmark.apps.nerc-ocp-prod.rc.fas.harvard.edu
+  to:
+    kind: Service
+    name: nginx-webserver
+  port:
+    targetPort: 8080

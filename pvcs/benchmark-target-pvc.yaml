@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-target
+  name: benchmark-target-pvc
 spec:
   accessModes:
     - ReadWriteOnce
